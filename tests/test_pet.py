@@ -110,7 +110,7 @@ class TestPet:
                 "status": "sold"
             }
         with allure.step("Отправка запроса на обновление данных питомца"):
-            response = requests.post(url=f"{BASE_URL}/pet", json=payload)
+            response = requests.put(url=f"{BASE_URL}/pet", json=payload)
             response_json = response.json()
         with allure.step("Проверка статуса ответа"):
             assert response.status_code == 200, "Код ответа не совпал с ожидаемым"
@@ -120,11 +120,11 @@ class TestPet:
             assert response_json["status"] == payload["status"], "статус питомца не совпадает с ожидаемым"
 
     @allure.title("Удаление питомца по id")
-    def test_update_pet(self, create_pet):
+    def test_delete_pet(self, create_pet):
         with allure.step("Получение id питомца"):
             pet_id = create_pet["id"]
         with allure.step("Отправка запроса на удаление питомца"):
-            response = requests.post(url=f"{BASE_URL}/pet/{pet_id}")
+            response = requests.delete(url=f"{BASE_URL}/pet/{pet_id}")
         with allure.step("Проверка статуса ответа"):
             assert response.status_code == 400, "Код ответа не совпал с ожидаемым"
         with allure.step("Проверка текстового содержания ответа"):
