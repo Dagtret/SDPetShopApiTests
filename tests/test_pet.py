@@ -126,6 +126,12 @@ class TestPet:
         with allure.step("Отправка запроса на удаление питомца"):
             response = requests.delete(url=f"{BASE_URL}/pet/{pet_id}")
         with allure.step("Проверка статуса ответа"):
-            assert response.status_code == 400, "Код ответа не совпал с ожидаемым"
+            assert response.status_code == 200, "Код ответа не совпал с ожидаемым"
         with allure.step("Проверка текстового содержания ответа"):
-            assert response.text == "No Name provided. Try again?", "Текст ошибки не совпал с ожидаемым"
+            assert response.text == "Pet deleted", "Текст ошибки не совпал с ожидаемым"
+        with allure.step("Отправка запроса на получение информации о питомце по id"):
+            response = requests.get(url=f"{BASE_URL}/pet/{pet_id}")
+        with allure.step("Проверка статуса ответа и данных питомца"):
+            assert response.status_code == 404, "Код ответа не совпал с ожидаемым"
+        with allure.step("Проверка текстового содержания ответа"):
+            assert response.text == "Pet not found", "Текст ошибки не совпал с ожидаемым"
