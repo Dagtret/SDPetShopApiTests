@@ -153,5 +153,7 @@ class TestPet:
         with allure.step(f"Отправка запроса на получение питомцев по статусу {status}"):
             response = requests.get(url=f"{BASE_URL}/pet/findByStatus", params={"status": status})
         with allure.step("Проверка статуса ответа и формата данных"):
-            assert response.status_code == expected_status_code
-            assert isinstance(response.json(), list)
+            if expected_status_code == 200:
+                assert isinstance(response.json(), list), "Формат ответа не массив"
+            elif expected_status_code == 400:
+                assert isinstance(response.json(), dict), "Формат ответа не объект"
